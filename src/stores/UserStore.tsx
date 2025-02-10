@@ -30,6 +30,10 @@ export class UserStore {
     return this.getUserById(this.selectedUserId);
   }
 
+  get selectedUserIdValue(): number | null {
+    return this.selectedUserId;
+  }
+
   getUserById = (id: number): User | undefined => {
     return this.users.find((u) => u.id === id);
   };
