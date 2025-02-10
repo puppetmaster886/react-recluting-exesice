@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { Providers } from "./providers/Providers";
+import { Providers } from "@/providers/Providers";
 
 export const metadata: Metadata = {
   title: "Users and Posts",
@@ -15,7 +15,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <Providers>{children}</Providers>
+        <main style={{ textAlign: "center", margin: "2rem" }}>
+          <Providers>{children}</Providers>
+        </main>
       </body>
     </html>
   );
