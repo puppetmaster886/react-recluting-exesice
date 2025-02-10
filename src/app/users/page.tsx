@@ -4,7 +4,9 @@ import { LinearProgress } from "@mui/material";
 import { DataGrid, GridColDef, GridEventListener } from "@mui/x-data-grid";
 import { observer } from "mobx-react-lite";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import Fuse from "fuse.js";
+import Highlighter from "react-highlight-words";
 
 const Home = () => {
   const router = useRouter();
@@ -13,20 +15,46 @@ const Home = () => {
   const { loadAllUsers, userList: users, isLoading: storeLoading } = userStore;
 
   const [localLoading, setLocalLoading] = useState(true);
+  const [searchText, setSearchText] = useState("");
 
   const loading = storeLoading || localLoading;
+
+  const filteredUsers = useMemo(() => {
+    if (!searchText) return users;
+    const fuse = new Fuse(users, {
+      keys: ["name", "username", "email", "company"],
+      threshold: 0.3,
+      ignoreDiacritics: true,
+    });
+    return fuse.search(searchText).map((result) => result.item);
+  }, [users, searchText]);
+
   const columns: GridColDef[] = [
     {
       field: "name",
       headerName: "Name",
       flex: 1,
       sortable: true,
+      renderCell: (params) => (
+        <Highlighter
+          searchWords={[searchText]}
+          autoEscape={true}
+          textToHighlight={params.value || ""}
+        />
+      ),
     },
     {
       field: "username",
       headerName: "Username",
       flex: 1,
       sortable: true,
+      renderCell: (params) => (
+        <Highlighter
+          searchWords={[searchText]}
+          autoEscape={true}
+          textToHighlight={params.value || ""}
+        />
+      ),
     },
     {
       field: "phone",
@@ -39,6 +67,13 @@ const Home = () => {
       headerName: "Email",
       flex: 1,
       sortable: true,
+      renderCell: (params) => (
+        <Highlighter
+          searchWords={[searchText]}
+          autoEscape={true}
+          textToHighlight={params.value || ""}
+        />
+      ),
     },
     {
       field: "city",
@@ -51,6 +86,13 @@ const Home = () => {
       headerName: "Company",
       flex: 1,
       sortable: true,
+      renderCell: (params) => (
+        <Highlighter
+          searchWords={[searchText]}
+          autoEscape={true}
+          textToHighlight={params.value || ""}
+        />
+      ),
     },
   ];
 
@@ -71,22 +113,31 @@ const Home = () => {
         {loading && <LinearProgress />}
         {!loading && users.length === 0 && <div>No users found</div>}
         {!loading && users.length > 0 && (
-          <DataGrid
-            rows={users.map((user) => ({
-              id: user.id,
-              name: user.name,
-              username: user.username,
-              phone: user.phone,
-              email: user.email,
-              city: user.address.city,
-              company: user.company.name,
-            }))}
-            columns={columns}
-            autoPageSize
-            sx={{ border: 0 }}
-            disableRowSelectionOnClick
-            onRowClick={handleRowClick}
-          />
+          <>
+            <input
+              type="text"
+              value={searchText}
+              onChange={(e) => setSearchText(e.target.value)}
+              placeholder="Search user"
+              style={{ marginBottom: "1rem", padding: "0.5rem", width: "50%" }}
+            />
+            <DataGrid
+              rows={filteredUsers.map((user) => ({
+                id: user.id,
+                name: user.name,
+                username: user.username,
+                phone: user.phone,
+                email: user.email,
+                city: user.address.city,
+                company: user.company.name,
+              }))}
+              columns={columns}
+              autoPageSize
+              sx={{ border: 0 }}
+              disableRowSelectionOnClick
+              onRowClick={handleRowClick}
+            />
+          </>
         )}
       </div>
     </>
