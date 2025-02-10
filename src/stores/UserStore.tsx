@@ -8,6 +8,7 @@ export class UserStore {
   private loading: boolean = false;
   private error: string | null = null;
   private selectedUserId: number | null = null;
+  private allUsersLoaded: boolean = false;
 
   constructor() {
     makeAutoObservable(this);
@@ -39,13 +40,14 @@ export class UserStore {
   };
 
   loadAllUsers = async () => {
-    if (this.users.length > 0) return;
+    if (this.allUsersLoaded) return;
     this.loading = true;
     this.error = null;
     try {
       const data = await fetchUsers();
       runInAction(() => {
         this.users = data;
+        this.allUsersLoaded = true;
       });
     } catch (err: unknown) {
       runInAction(() => {

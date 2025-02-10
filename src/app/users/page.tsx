@@ -57,7 +57,6 @@ const Home = () => {
   const handleRowClick: GridEventListener<"rowClick"> = (params) => {
     const userId = params.row.id;
     router.push(`/users/${userId}`);
-    console.log("Row clicked", userId);
   };
 
   useEffect(() => {
@@ -67,7 +66,7 @@ const Home = () => {
 
   return (
     <>
-      <h1>Users list</h1>
+      <h1>User&apos;s list</h1>
       <div style={{ height: 630, width: "80%" }}>
         {loading && <LinearProgress />}
         {!loading && users.length === 0 && <div>No users found</div>}

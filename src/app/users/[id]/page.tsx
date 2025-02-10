@@ -1,6 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import {
+  Button,
   Card,
   CardContent,
   CircularProgress,
@@ -8,10 +9,11 @@ import {
   Typography,
 } from "@mui/material";
 import { useRootStore } from "@/providers/StoresProvider";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { observer } from "mobx-react-lite";
 
 const UserDetailPage = () => {
+  const router = useRouter();
   const params = useParams();
   const userId = params.id ? Number(params.id) : null;
 
@@ -42,16 +44,18 @@ const UserDetailPage = () => {
 
   return (
     <div style={{ padding: "1rem" }}>
+      <Button variant="contained" onClick={() => router.push(`/users`)}>
+        User&apos;s List
+      </Button>
       <Typography variant="h4" gutterBottom sx={{ mt: 2 }}>
-        Detalle del Usuario
+        User Detail
       </Typography>
-      <Typography>Nombre: {user.name}</Typography>
-      <Typography>Usuario: {user.username}</Typography>
-      <Typography>Teléfono: {user.phone}</Typography>
+      <Typography>Name: {user.name}</Typography>
+      <Typography>UserName: {user.username}</Typography>
+      <Typography>Phone: {user.phone}</Typography>
       <Typography>Email: {user.email}</Typography>
-      <Typography>Ciudad: {user.address.city}</Typography>
-      <Typography>Empresa: {user.company.name}</Typography>
-
+      <Typography>City: {user.address.city}</Typography>
+      <Typography>Company: {user.company.name}</Typography>
       <Typography variant="h5" sx={{ mt: 4 }}>
         Posts
       </Typography>
