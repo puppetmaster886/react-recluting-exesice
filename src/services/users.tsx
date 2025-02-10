@@ -4,6 +4,12 @@ export async function fetchUsers(): Promise<User[]> {
   return res.json();
 }
 
+export async function fetchUser(id: number): Promise<User> {
+  const res = await fetch(`https://jsonplaceholder.typicode.com/users/${id}`);
+  if (!res.ok) throw new Error("Error fetching user");
+  return res.json();
+}
+
 export interface User {
   address: {
     city: string;

@@ -1,13 +1,20 @@
 "use client";
-import { fetchUsers, User } from "@/services/users";
+import { useRootStore } from "@/providers/StoresProvider";
 import { LinearProgress } from "@mui/material";
-import { DataGrid, GridColDef } from "@mui/x-data-grid";
+import { DataGrid, GridColDef, GridEventListener } from "@mui/x-data-grid";
+import { observer } from "mobx-react-lite";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
-export default function Home() {
-  const [users, setUsers] = useState<User[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
+const Home = () => {
+  const router = useRouter();
 
+  const { userStore } = useRootStore();
+  const { loadAllUsers, userList: users, isLoading: storeLoading } = userStore;
+
+  const [localLoading, setLocalLoading] = useState(true);
+
+  const loading = storeLoading || localLoading;
   const columns: GridColDef[] = [
     {
       field: "name",
@@ -47,21 +54,16 @@ export default function Home() {
     },
   ];
 
-  async function getUsers() {
-    try {
-      setLoading(true);
-      const users = await fetchUsers();
-      setUsers(users);
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setLoading(false);
-    }
-  }
+  const handleRowClick: GridEventListener<"rowClick"> = (params) => {
+    const userId = params.row.id;
+    router.push(`/users/${userId}`);
+    console.log("Row clicked", userId);
+  };
 
   useEffect(() => {
-    getUsers();
-  }, []);
+    loadAllUsers();
+    setLocalLoading(false);
+  }, [loadAllUsers]);
 
   return (
     <>
@@ -84,9 +86,12 @@ export default function Home() {
             autoPageSize
             sx={{ border: 0 }}
             disableRowSelectionOnClick
+            onRowClick={handleRowClick}
           />
         )}
       </div>
     </>
   );
-}
+};
+
+export default observer(Home);

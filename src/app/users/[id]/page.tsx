@@ -1,31 +1,23 @@
 "use client";
-import React from "react";
-import { Card, CardContent, Typography } from "@mui/material";
+import React, { useEffect, useState } from "react";
+import { Card, CardContent, LinearProgress, Typography } from "@mui/material";
+import { useRootStore } from "@/providers/StoresProvider";
+import { useParams } from "next/navigation";
+import { observer } from "mobx-react-lite";
 
-export default function UserDetailPage() {
-  const user = {
-    id: 1,
-    name: "Leanne Graham",
-    username: "Bret",
-    email: "Sincere@april.biz",
-    address: {
-      street: "Kulas Light",
-      suite: "Apt. 556",
-      city: "Gwenborough",
-      zipcode: "92998-3874",
-      geo: {
-        lat: "-37.3159",
-        lng: "81.1496",
-      },
-    },
-    phone: "1-770-736-8031 x56442",
-    website: "hildegard.org",
-    company: {
-      name: "Romaguera-Crona",
-      catchPhrase: "Multi-layered client-server neural-net",
-      bs: "harness real-time e-markets",
-    },
-  };
+const UserDetailPage = () => {
+  const params = useParams();
+  const userId = params.id ? Number(params.id) : null;
+
+  const { userStore } = useRootStore();
+  const {
+    loadUserIfNotPresent,
+    selectedUser: user,
+    isLoading: storeLoading,
+  } = userStore;
+
+  const [localLoading, setLocalLoading] = useState(true);
+
   const posts = [
     {
       userId: 1,
@@ -40,6 +32,16 @@ export default function UserDetailPage() {
       body: "tsetset set tst setset ",
     },
   ];
+
+  useEffect(() => {
+    if (userId !== null && !isNaN(userId)) {
+      loadUserIfNotPresent(userId);
+      setLocalLoading(false);
+    }
+  }, [userId, loadUserIfNotPresent]);
+
+  if (localLoading || storeLoading) return <LinearProgress />;
+  if (!user) return <Typography>Invalid user</Typography>;
 
   return (
     <div style={{ padding: "1rem" }}>
@@ -66,4 +68,6 @@ export default function UserDetailPage() {
       ))}
     </div>
   );
-}
+};
+
+export default observer(UserDetailPage);
