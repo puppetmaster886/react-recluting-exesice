@@ -3,6 +3,7 @@
 import * as React from "react";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { StoreProvider } from "./StoresProvider";
+import ToastError from "@/app/components/ToastError";
 
 const theme = createTheme({
   typography: {
@@ -87,7 +88,10 @@ const theme = createTheme({
 export function Providers({ children }: { children: React.ReactNode }) {
   return (
     <StoreProvider>
-      <ThemeProvider theme={theme}>{children}</ThemeProvider>
+      <ThemeProvider theme={theme}>
+        {children}
+        <ToastError />
+      </ThemeProvider>
     </StoreProvider>
   );
 }

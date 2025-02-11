@@ -27,7 +27,11 @@ export class PostStore {
     return this.error !== null;
   }
 
-  loadPostsByUser = async (userId: number): Promise<Post[]> => {
+  get errorValue() {
+    return this.error;
+  }
+
+  loadPostsByUser = async (userId: number): Promise<Post[] | undefined> => {
     const existingPosts = this.postsByUser.get(userId);
     if (existingPosts) return existingPosts;
 
@@ -43,7 +47,6 @@ export class PostStore {
       runInAction(() => {
         this.error = err instanceof Error ? err.message : "Unknown error";
       });
-      throw err;
     } finally {
       runInAction(() => {
         this.loading = false;
@@ -51,7 +54,7 @@ export class PostStore {
     }
   };
 
-  loadPostsForSelectedUser = async (): Promise<Post[]> => {
+  loadPostsForSelectedUser = async (): Promise<Post[] | undefined> => {
     const userId = this.rootStore.userStore.selectedUserIdValue;
     if (userId === null) throw new Error("No hay usuario seleccionado");
     return await this.loadPostsByUser(userId);

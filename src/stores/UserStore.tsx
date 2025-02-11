@@ -35,11 +35,15 @@ export class UserStore {
     return this.selectedUserId;
   }
 
+  get errorValue() {
+    return this.error;
+  }
+
   getUserById = (id: number): User | undefined => {
     return this.users.find((u) => u.id === id);
   };
 
-  loadAllUsers = async () => {
+  loadAllUsers = async (): Promise<User[] | undefined> => {
     if (this.allUsersLoaded) return;
     this.loading = true;
     this.error = null;
@@ -60,7 +64,7 @@ export class UserStore {
     }
   };
 
-  loadUserIfNotPresent = async (id: number): Promise<User> => {
+  loadUserIfNotPresent = async (id: number): Promise<User | undefined> => {
     this.selectedUserId = id;
     const existing = this.getUserById(id);
     if (existing) {
@@ -78,7 +82,6 @@ export class UserStore {
       runInAction(() => {
         this.error = err instanceof Error ? err.message : "Unknown error";
       });
-      throw err;
     } finally {
       runInAction(() => {
         this.loading = false;
