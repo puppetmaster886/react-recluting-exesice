@@ -1,6 +1,6 @@
 "use client";
 import { useRootStore } from "@/providers/StoresProvider";
-import { LinearProgress } from "@mui/material";
+import { LinearProgress, Typography } from "@mui/material";
 import { DataGrid, GridColDef, GridEventListener } from "@mui/x-data-grid";
 import { observer } from "mobx-react-lite";
 import { useRouter } from "next/navigation";
@@ -12,7 +12,12 @@ const Home = () => {
   const router = useRouter();
 
   const { userStore } = useRootStore();
-  const { loadAllUsers, userList: users, isLoading: storeLoading } = userStore;
+  const {
+    loadAllUsers,
+    userList: users,
+    isLoading: storeLoading,
+    hasError: error,
+  } = userStore;
 
   const [localLoading, setLocalLoading] = useState(true);
   const [searchText, setSearchText] = useState("");
@@ -108,18 +113,35 @@ const Home = () => {
 
   return (
     <>
-      <h1>User&apos;s list</h1>
-      <div style={{ height: 630, width: "80%" }}>
+      <Typography variant="h3" ml={4}>
+        User&apos;s list
+      </Typography>
+      <div style={{ height: 630 }}>
         {loading && <LinearProgress />}
-        {!loading && users.length === 0 && <div>No users found</div>}
+        {!loading && users.length === 0 && (
+          <Typography variant="h4" sx={{ mt: 6, ml: 1 }}>
+            No users found
+          </Typography>
+        )}
+        {!loading && error && (
+          <Typography variant="h4" sx={{ mt: 6, ml: 1 }}>
+            Error loading users...
+          </Typography>
+        )}
         {!loading && users.length > 0 && (
           <>
             <input
               type="text"
               value={searchText}
               onChange={(e) => setSearchText(e.target.value)}
-              placeholder="Search user"
-              style={{ marginBottom: "1rem", padding: "0.5rem", width: "50%" }}
+              placeholder="Search user, username, email or company..."
+              style={{
+                marginBottom: "1rem",
+                padding: "0.5rem",
+                width: "95%",
+                border: "1px solid #ccc",
+                borderRadius: "8px",
+              }}
             />
             <DataGrid
               rows={filteredUsers.map((user) => ({

@@ -22,6 +22,7 @@ const UserDetailPage = () => {
     loadUserIfNotPresent,
     selectedUser: user,
     isLoading: storeLoading,
+    hasError: error,
   } = userStore;
   const {
     postsForSelectedUser: posts,
@@ -39,27 +40,52 @@ const UserDetailPage = () => {
     }
   }, [userId, loadUserIfNotPresent, loadPostsForSelectedUser]);
 
-  if (localLoading || storeLoading) return <LinearProgress />;
-  if (!user) return <Typography>Invalid user</Typography>;
+  const loading = localLoading || storeLoading;
 
-  return (
-    <div style={{ padding: "1rem" }}>
-      <Button variant="contained" onClick={() => router.push(`/users`)}>
-        User&apos;s List
-      </Button>
-      <Typography variant="h4" gutterBottom sx={{ mt: 2 }}>
-        User Detail
-      </Typography>
-      <Typography>Name: {user.name}</Typography>
-      <Typography>UserName: {user.username}</Typography>
-      <Typography>Phone: {user.phone}</Typography>
-      <Typography>Email: {user.email}</Typography>
-      <Typography>City: {user.address.city}</Typography>
-      <Typography>Company: {user.company.name}</Typography>
-      <Typography variant="h5" sx={{ mt: 4 }}>
+  const userInfo =
+    !user || error ? (
+      <>
+        <Typography variant="h4" sx={{ mt: 6, ml: 1 }}>
+          Invalid user
+        </Typography>
+        <Typography variant="body1" sx={{ mt: 2 }}>
+          The user with id {userId} does not exist. Try going back to the list.
+        </Typography>
+      </>
+    ) : (
+      <>
+        <Typography variant="h4" gutterBottom sx={{ mt: 2, ml: 2 }}>
+          User Details
+        </Typography>
+        <Typography>
+          <b>Name:</b> {user.name}
+        </Typography>
+        <Typography>
+          <b>UserName:</b> {user.username}
+        </Typography>
+        <Typography>
+          <b>Phone:</b> {user.phone}
+        </Typography>
+        <Typography>
+          <b>Email:</b> {user.email}
+        </Typography>
+        <Typography>
+          <b>City:</b> {user.address.city}
+        </Typography>
+        <Typography>
+          <b>Company:</b> {user.company.name}
+        </Typography>
+      </>
+    );
+
+  const postList = (
+    <>
+      <Typography variant="h5" sx={{ mt: 4, ml: 2 }}>
         Posts
       </Typography>
-      {postStoreLoading && <CircularProgress />}
+      {postStoreLoading && (
+        <CircularProgress size={150} thickness={3} sx={{ mt: 6 }} />
+      )}
       {!postStoreLoading &&
         !!posts.length &&
         posts.map((post) => (
@@ -70,6 +96,19 @@ const UserDetailPage = () => {
             </CardContent>
           </Card>
         ))}
+    </>
+  );
+
+  return (
+    <div style={{ padding: "1rem" }}>
+      <Button variant="contained" onClick={() => router.push(`/users`)}>
+        Back to user&apos;s List
+      </Button>
+
+      {loading && <LinearProgress />}
+
+      {!loading && userInfo}
+      {!loading && !!user && postList}
     </div>
   );
 };

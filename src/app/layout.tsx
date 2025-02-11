@@ -15,7 +15,15 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <main style={{ textAlign: "center", margin: "2rem" }}>
+        <main
+          style={{
+            textAlign: "center",
+            margin: "2rem",
+            maxWidth: "800px",
+            marginLeft: "auto",
+            marginRight: "auto",
+          }}
+        >
           <Providers>{children}</Providers>
         </main>
       </body>

@@ -1,36 +1,74 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+//// filepath: /c:/dev/react-recluting-exesice/README.md
 
-## Getting Started
+# Users & Posts Dashboard App
 
-First, run the development server:
+This project is a Next.js application built with TypeScript, Material UI, and MobX. It fetches data from the JSONPlaceholder API to display a list of users and their associated posts. The application demonstrates modern UI design, modular code structure, performance optimizations, and clean source code.
+
+## Features
+
+- **Users List:** Displays users using a data grid (with sorting and filtering) powered by Material UI.
+- **User Detail:** Shows detailed information about a selected user along with their posts.
+- **Global State Management:** Uses MobX to cache and share state between components, preventing redundant API calls.
+- **Modern UI:** Built with Material UI for a responsive and clean design.
+- **Compiled Application:** The application compiles properly (using Next.js build), generating production-ready code in the `.next` directory.
+- **Compilable Source Code:** All source code is written in TypeScript and is fully compilable.
+
+## Prerequisites
+
+- Node.js (v14 LTS or higher)
+- npm (v6 or higher)
+
+## Installation
+
+### Clone the repository:
+
+```bash
+git clone https://github.com/your-username/your-repo-name.git
+cd your-repo-name
+```
+
+### Install Dependencies:
+
+```bash
+npm install
+```
+
+## Execution Instructions
+
+### Development Mode
+
+To run the application in development mode (with hot reloading):
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open your browser and navigate to http://localhost:3000 to view the app.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Production Mode
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1. Build the Application:
 
-## Learn More
+```bash
+npm run build
+```
 
-To learn more about Next.js, take a look at the following resources:
+2. Start the Production Server:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+npm start
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+The application will be available at http://localhost:3000 in production mode.
 
-## Deploy on Vercel
+### API Endpoints
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+The application consumes the following endpoints from JSONPlaceholder:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- GET https://jsonplaceholder.typicode.com/users — Retrieves a list of users.
+- GET https://jsonplaceholder.typicode.com/users/:id — Retrieves detailed information for a specific user.
+- GET https://jsonplaceholder.typicode.com/users/:id/posts — Retrieves the posts for a specific user.
+
+## License
+
+This project is licensed under the MIT License.
