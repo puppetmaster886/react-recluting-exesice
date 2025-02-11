@@ -1,15 +1,19 @@
 "use client";
 import { useRootStore } from "@/providers/StoresProvider";
-import { LinearProgress, Typography } from "@mui/material";
+import { LinearProgress, Typography, useMediaQuery } from "@mui/material";
 import { DataGrid, GridColDef, GridEventListener } from "@mui/x-data-grid";
 import { observer } from "mobx-react-lite";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import Fuse from "fuse.js";
 import Highlighter from "react-highlight-words";
+import { useTheme } from "@mui/material/styles";
 
 const Home = () => {
   const router = useRouter();
+  const theme = useTheme();
+  const isMobileSmall = useMediaQuery(theme.breakpoints.down("sm"));
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
   const { userStore } = useRootStore();
   const {
@@ -101,6 +105,13 @@ const Home = () => {
     },
   ];
 
+  const columnVisibilityModel = {
+    phone: !isMobile,
+    email: !isMobileSmall,
+    city: !isMobile,
+    company: !isMobileSmall,
+  };
+
   const handleRowClick: GridEventListener<"rowClick"> = (params) => {
     const userId = params.row.id;
     router.push(`/users/${userId}`);
@@ -138,7 +149,7 @@ const Home = () => {
               style={{
                 marginBottom: "1rem",
                 padding: "0.5rem",
-                width: "95%",
+                width: isMobileSmall ? "99%" : "95%",
                 border: "1px solid #ccc",
                 borderRadius: "8px",
               }}
@@ -154,6 +165,7 @@ const Home = () => {
                 company: user.company.name,
               }))}
               columns={columns}
+              columnVisibilityModel={columnVisibilityModel}
               autoPageSize
               sx={{ border: 0 }}
               disableRowSelectionOnClick

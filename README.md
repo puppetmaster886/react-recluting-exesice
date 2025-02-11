@@ -11,6 +11,10 @@ This project is a Next.js application built with TypeScript, Material UI, and Mo
 - **Compiled Application:** The application compiles properly (using Next.js build), generating production-ready code in the `.next` directory.
 - **Compilable Source Code:** All source code is written in TypeScript and is fully compilable.
 
+## Responsive Design
+
+The requirement request to display a lost of columns in the data grid, but the design is responsive and the columns are hidden on smaller screens. A better approach would be changing the columns to a more mobile-friendly layout like accordion or tabs.
+
 ## Live Demo
 
 A live demo of the application is available at [https://react-recluting-exesice.vercel.app/](https://react-recluting-exesice.vercel.app/).
