@@ -1,5 +1,3 @@
-//// filepath: /c:/dev/react-recluting-exesice/README.md
-
 # Users & Posts Dashboard App
 
 This project is a Next.js application built with TypeScript, Material UI, and MobX. It fetches data from the JSONPlaceholder API to display a list of users and their associated posts. The application demonstrates modern UI design, modular code structure, performance optimizations, and clean source code.
