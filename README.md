@@ -11,6 +11,10 @@ This project is a Next.js application built with TypeScript, Material UI, and Mo
 - **Compiled Application:** The application compiles properly (using Next.js build), generating production-ready code in the `.next` directory.
 - **Compilable Source Code:** All source code is written in TypeScript and is fully compilable.
 
+## Live Demo
+
+A live demo of the application is available at [https://react-recluting-exesice.vercel.app/](https://react-recluting-exesice.vercel.app/).
+
 ## Prerequisites
 
 - Node.js (v14 LTS or higher)
@@ -21,8 +25,8 @@ This project is a Next.js application built with TypeScript, Material UI, and Mo
 ### Clone the repository:
 
 ```bash
-git clone https://github.com/your-username/your-repo-name.git
-cd your-repo-name
+git clone https://github.com/puppetmaster886/react-recluting-exesice.git
+cd react-recluting-exesice
 ```
 
 ### Install Dependencies:
@@ -66,6 +70,14 @@ The application consumes the following endpoints from JSONPlaceholder:
 - GET https://jsonplaceholder.typicode.com/users — Retrieves a list of users.
 - GET https://jsonplaceholder.typicode.com/users/:id — Retrieves detailed information for a specific user.
 - GET https://jsonplaceholder.typicode.com/users/:id/posts — Retrieves the posts for a specific user.
+
+### Libraries Used
+
+- **MobX:** A simple and scalable state management library that makes it easy to share state between components.
+- **Material UI:** A React component library that provides pre-built components and styles for modern web applications.
+- **Material UI datagrid:** A customizable data grid component lot of features out of the box, for example sorting, filtering, pagination, etc.
+- **fuse.js:** A lightweight fuzzy-search library that enables fast and flexible search functionality.
+- **react-highlight-words:** A React component that highlights search terms within text content.
 
 ## License
 
